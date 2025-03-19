@@ -21,15 +21,18 @@ dotenv.config();
 
 const app = express();
 
+// Ensure database connection
+db.authenticate()
+  .then(() => console.log("✅ Database connected"))
+  .catch((err) => console.error("❌ Database connection error:", err));
+
+db.sync({ alter: true }) // Ensure tables are updated
+  .then(() => console.log("✅ Database synchronized"))
+  .catch((err) => console.error("❌ Error syncing database:", err));
+
 // Middleware
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:3000", // Adjust for your frontend URL
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cookieParser());
 
 // Routes
