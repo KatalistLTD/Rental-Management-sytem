@@ -11,13 +11,13 @@ CREATE TABLE properties (
     landlord_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
-    rent_price DECIMAL(10,2) UNSIGNED NOT NULL CHECK (rent_price > 0),
-    unit_count INT UNSIGNED NOT NULL CHECK (unit_count > 0),
+    rent_price DECIMAL(10,2) NOT NULL,
+    unit_count INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (landlord_id) REFERENCES landlords(id) ON DELETE CASCADE,
-    INDEX (landlord_id)
+    FOREIGN KEY (landlord_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
 
 CREATE TABLE tenants (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -72,7 +72,7 @@ CREATE TABLE invoices (
 );
 
 CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    userId INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,

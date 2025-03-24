@@ -1,11 +1,11 @@
-import express from "express";
-import {
+const express = require("express")
+const {
   addProperty,
   deleteProperty,
   editProperty,
   getAllProperties,
-} from "../controllers/propertyController.js";
-import { verifyToken } from "../middleware/auth.js";
+} = require("../controllers/propertyController.js")
+const { verifyToken } =require("../middleware/authMiddleware")
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.post("/", verifyToken, addProperty);
 router.put("/:id", verifyToken, editProperty);
 router.delete("/:id", verifyToken, deleteProperty);
 
-export default router;
+module.exports = router;

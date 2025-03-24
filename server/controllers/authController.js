@@ -18,7 +18,7 @@ exports.loginUser = async (req, res) => {
 
     // Fetch user from DB
     const user = await User.findOne({ where: { email } });
-    console.log("🔍 User found:", user ? user.id : "No user found");
+    console.log("🔍 User found:", user ? user.userId : "No user found");
 
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -27,15 +27,15 @@ exports.loginUser = async (req, res) => {
     // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.warn("❌ Invalid password for user ID:", user.id);
+      console.warn("❌ Invalid password for user ID:", user.userId);
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    console.log("✅ User authenticated:", user.id);
+    console.log("✅ User authenticated:", user.userId);
 
-    // Generate JWT
+    // ✅ Generate JWT with `userId`
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { userId: user.userId, role: user.role }, // 🔥 Replaced `id` with `userId`
       process.env.JWT_SECRET || "default_secret",
       { expiresIn: "1h" }
     );
@@ -46,9 +46,13 @@ exports.loginUser = async (req, res) => {
       secure: false,
       sameSite: "Strict",
     });
-    res
-      .status(200)
-      .json({ message: "Login successful", token, role: user.role });
+
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      role: user.role,
+      userId: user.userId, // 🔥 Ensure frontend receives `userId`
+    });
   } catch (error) {
     console.error("🛑 Unexpected Login Error:", error);
     res.status(500).json({ message: "Server error, please try again later" });

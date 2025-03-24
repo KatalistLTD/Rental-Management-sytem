@@ -9,6 +9,7 @@ const tenantRoutes = require("./routes/tenantRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const maintenanceRoutes = require("./routes/maintenanceRoutes");
 const reportRoutes = require("./routes/reportRoutes");
+const propertyRoutes =require("./routes/propertyRoutes")
 
 const sequelize = require("./config/db");
 
@@ -38,6 +39,7 @@ app.use(cookieParser());
 // Routes
 app.use("/api/", authRoutes);
 app.use("/api/landlord", landlordRoutes);
+app.use("/api/properties", propertyRoutes);
 app.use("/api/tenants", tenantRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/maintenance", maintenanceRoutes);
