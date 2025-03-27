@@ -15,16 +15,28 @@ const getAuthHeaders = (token) => ({
 // Fetch all tenants
 export const fetchTenants = async (token) => {
   try {
-    const res = await apiClient.get("/", getAuthHeaders(token));
-    return res.data;
+    if (!token) throw new Error("No authentication token provided");
+    
+    const response = await fetch("http://localhost:5000/api/tenants/", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Ensure correct format
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to fetch tenants");
+    }
+
+    return await response.json();
   } catch (error) {
-    console.error(
-      "Error fetching tenants:",
-      error.response?.data || error.message
-    );
-    throw new Error(error.response?.data?.error || "Failed to fetch tenants");
+    console.error("Error fetching tenants:", error);
+    throw error;
   }
 };
+
 
 // Add a new tenant
 export const addTenant = async (tenant, token) => {

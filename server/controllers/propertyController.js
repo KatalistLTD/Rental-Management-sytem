@@ -4,7 +4,7 @@ const { getProperties, createProperty, updateProperty, deleteProperty } = requir
 exports.getAllProperties = async (req, res) => {
   try {
     console.log("Decoded User:", req.user); // Debugging
-    const landlordId = req.user.landlordId;
+    const landlordId = req.user.userId;
     console.log("Fetching properties for landlord:", landlordId);
 
     if (!landlordId) {
@@ -23,7 +23,7 @@ exports.getAllProperties = async (req, res) => {
 exports.addProperty = async (req, res) => {
   try {
     const { name, location, rent_price, unit_count } = req.body;
-    const propertyId = await createProperty(req.user.landlordId, name, location, rent_price, unit_count);
+    const propertyId = await createProperty(req.user.userId, name, location, rent_price, unit_count);
     res.status(201).json({ id: propertyId, message: "Property added successfully" });
   } catch (error) {
     res.status(500).json({ error: "Failed to add property" });

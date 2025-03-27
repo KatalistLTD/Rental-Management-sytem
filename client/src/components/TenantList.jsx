@@ -6,15 +6,25 @@ const TenantList = ({ token }) => {
 
   useEffect(() => {
     const loadTenants = async () => {
+      console.log("Received token in TenantList:", token);
+      
+      if (!token) {
+        console.error("No token found. Cannot fetch tenants.");
+        return;
+      }
+  
       try {
-        const data = await fetchTenants(token);
-        setTenants(data);
+        const tenants = await fetchTenants(token);
+        setTenants(tenants);
       } catch (error) {
         console.error("Failed to fetch tenants:", error);
+        setError(error.message);
       }
     };
+  
     loadTenants();
   }, [token]);
+  
 
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this tenant?")) return;

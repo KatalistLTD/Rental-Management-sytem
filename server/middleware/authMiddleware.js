@@ -5,7 +5,8 @@ require("dotenv").config();
 
 // ✅ Token Verification Middleware
 exports.verifyToken = (req, res, next) => {
-  const authHeader = req.header("Authorization");
+  console.log("🔹 Headers Received:", req.headers);
+  const authHeader = req.headers["authorization"] || req.headers["Authorization"];
 
   console.log("✅ Received Authorization Header:", authHeader); // Debugging
 

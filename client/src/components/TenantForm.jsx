@@ -1,18 +1,39 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const TenantForm = ({ token, onTenantAdded }) => {
-  const [form, setForm] = useState({
+  const initialState = {
+    propertyId: "",
     name: "",
     email: "",
     phone: "",
     rentAmount: "",
     leaseStart: "",
     leaseEnd: "",
-  });
+  };
 
+  const [form, setForm] = useState(initialState);
+  const [properties, setProperties] = useState([]); // ✅ Holds property list
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Fetch properties when component mounts
+  const fetchProperties = useCallback(async () => {
+    if (!token) return;
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/properties", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProperties(data);
+    } catch (err) {
+      setError("Failed to load properties. Try again.");
+      console.error("Error fetching properties:", err);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchProperties();
+  }, [fetchProperties]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,14 +42,8 @@ const TenantForm = ({ token, onTenantAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (Object.values(form).some((field) => !field)) {
       setError("All fields are required.");
-      return;
-    }
-
-    if (!token) {
-      setError("Unauthorized: No token provided. Please log in.");
       return;
     }
 
@@ -36,7 +51,7 @@ const TenantForm = ({ token, onTenantAdded }) => {
     setError("");
 
     try {
-      const response = await axios.post(
+      const { data } = await axios.post(
         "http://localhost:5000/api/tenants",
         form,
         {
@@ -48,24 +63,10 @@ const TenantForm = ({ token, onTenantAdded }) => {
       );
 
       alert("Tenant added successfully!");
-      setForm({
-        name: "",
-        email: "",
-        phone: "",
-        rentAmount: "",
-        leaseStart: "",
-        leaseEnd: "",
-      });
-
-      // Notify parent component to refresh tenant list
-      if (onTenantAdded) {
-        onTenantAdded(response.data);
-      }
-    } catch (error) {
-      setError(
-        error.response?.data?.message ||
-          "Failed to add tenant. Please try again."
-      );
+      setForm(initialState);
+      onTenantAdded?.(data);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to add tenant.");
     } finally {
       setLoading(false);
     }
@@ -81,10 +82,30 @@ const TenantForm = ({ token, onTenantAdded }) => {
       {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
       <div className="space-y-3">
+        {/* Property Dropdown */}
+        <select
+          name="propertyId"
+          className="border p-2 w-full rounded-md"
+          value={form.propertyId}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select Property</option>
+          {properties.length > 0 ? (
+            properties.map(({ id, name }) => (
+              <option key={id} value={id}>
+                {name} (ID: {id})
+              </option>
+            ))
+          ) : (
+            <option disabled>Loading properties...</option>
+          )}
+        </select>
+
         <input
           type="text"
           name="name"
-          placeholder="Name"
+          placeholder="Tenant Name"
           className="border p-2 w-full rounded-md"
           value={form.name}
           onChange={handleChange}
@@ -138,7 +159,9 @@ const TenantForm = ({ token, onTenantAdded }) => {
 
       <button
         type="submit"
-        className={`w-full mt-4 p-2 rounded-md text-white ${loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"}`}
+        className={`w-full mt-4 p-2 rounded-md text-white ${
+          loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
+        }`}
         disabled={loading}
       >
         {loading ? "Adding..." : "Add Tenant"}

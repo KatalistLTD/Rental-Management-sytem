@@ -37,7 +37,7 @@ exports.loginUser = async (req, res) => {
     const token = jwt.sign(
       { userId: user.userId, role: user.role }, // 🔥 Replaced `id` with `userId`
       process.env.JWT_SECRET || "default_secret",
-      { expiresIn: "1h" }
+      { expiresIn: "7d" }
     );
 
     // Set cookie & send response
