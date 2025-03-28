@@ -7,7 +7,7 @@ const PropertyForm = ({ token: propToken, onPropertyAdded }) => {
   const [formData, setFormData] = useState({
     name: "",
     location: "",
-    rent_price: "",
+    initialCost: "",
     unit_count: "",
   });
 
@@ -78,7 +78,7 @@ const PropertyForm = ({ token: propToken, onPropertyAdded }) => {
 
         <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
 
-        <input type="number" name="rent_price" placeholder="Rent Price" value={formData.rent_price} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
+        <input type="number" name="rent_price" placeholder="Rent Price" value={formData.initialCost} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
 
         <input type="number" name="unit_count" placeholder="Number of Units" value={formData.unit_count} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
 

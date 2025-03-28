@@ -8,8 +8,10 @@ const TenantForm = ({ token, onTenantAdded }) => {
     email: "",
     phone: "",
     rentAmount: "",
-    leaseStart: "",
-    leaseEnd: "",
+    leaseStart: new Date().toISOString().split("T")[0], // Today
+    leaseEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0], // +30 days
   };
 
   const [form, setForm] = useState(initialState);
@@ -36,8 +38,14 @@ const TenantForm = ({ token, onTenantAdded }) => {
   }, [fetchProperties]);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+  
+    setForm({
+      ...form,
+      [name]: name === "propertyId" ? parseInt(value, 10) || "" : value,
+    });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,7 +102,7 @@ const TenantForm = ({ token, onTenantAdded }) => {
           {properties.length > 0 ? (
             properties.map(({ id, name }) => (
               <option key={id} value={id}>
-                {name} (ID: {id})
+                {name}
               </option>
             ))
           ) : (
@@ -144,28 +152,27 @@ const TenantForm = ({ token, onTenantAdded }) => {
           name="leaseStart"
           className="border p-2 w-full rounded-md"
           value={form.leaseStart}
-          onChange={handleChange}
-          required
+          readOnly
         />
         <input
           type="date"
           name="leaseEnd"
           className="border p-2 w-full rounded-md"
           value={form.leaseEnd}
-          onChange={handleChange}
-          required
+          readOnly
         />
       </div>
 
       <button
-        type="submit"
-        className={`w-full mt-4 p-2 rounded-md text-white ${
-          loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-        }`}
-        disabled={loading}
-      >
-        {loading ? "Adding..." : "Add Tenant"}
-      </button>
+  type="submit"
+  className={`w-full mt-4 p-2 rounded-md text-white ${
+    loading || !form.propertyId ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+  }`}
+  disabled={loading || !form.propertyId}
+>
+  {loading ? "Adding..." : "Add Tenant"}
+</button>
+
     </form>
   );
 };

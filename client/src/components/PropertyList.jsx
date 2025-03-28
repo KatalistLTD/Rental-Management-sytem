@@ -48,7 +48,7 @@ const PropertyList = ({ token, refreshTrigger }) => {
             <tr className="bg-gray-100">
               <th className="p-3 border-b">Property Name</th>
               <th className="p-3 border-b">Location</th>
-              <th className="p-3 border-b">Rent Price (Ksh)</th>
+              <th className="p-3 border-b">Initial Cost (Ksh)</th>
               <th className="p-3 border-b">No. of Units</th>
               <th className="p-3 border-b text-center">Actions</th>
             </tr>
@@ -58,7 +58,7 @@ const PropertyList = ({ token, refreshTrigger }) => {
               <tr key={property.id} className="hover:bg-gray-50">
                 <td className="p-3 border-b">{property.name}</td>
                 <td className="p-3 border-b">{property.location}</td>
-                <td className="p-3 border-b">{property.rent_price}</td>
+                <td className="p-3 border-b">{property.initialCost}</td>
                 <td className="p-3 border-b">{property.unit_count}</td>
                 <td className="p-3 border-b text-center">
                   <button

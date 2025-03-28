@@ -1,4 +1,5 @@
 const Tenant = require("../models/tenant");
+const Property = require("../models/property")
 
 // Get all tenants for a specific landlord
 exports.getTenants = async (req, res) => {
@@ -29,16 +30,16 @@ exports.addTenant = async (req, res) => {
   try {
     const { propertyId, name, email, phone, rentAmount, leaseStart, leaseEnd } = req.body;
 
-    // Get landlord ID from the decoded token
-    const landlordId = req.user.userId; // Ensure `verifyToken` middleware is correctly attaching user info
+    // Get user ID from the decoded token (previously landlordId)
+    const userId = req.user.userId; // Ensure `verifyToken` middleware properly attaches `userId`
 
-    if (!landlordId || !propertyId) {
-      return res.status(400).json({ error: "Missing required fields: landlordId or propertyId" });
+    if (!userId || !propertyId) {
+      return res.status(400).json({ error: "Missing required fields: userId or propertyId" });
     }
 
-    // Create a new tenant
+    // Create a new tenant linked to the users table
     const tenant = await Tenant.create({
-      userId: landlordId, // Ensure this matches your model field
+      userId,  // Now correctly linked to `users.userId`
       propertyId,
       name,
       email,
@@ -54,6 +55,7 @@ exports.addTenant = async (req, res) => {
     res.status(500).json({ error: "Database error: Unable to create tenant." });
   }
 };
+
 
 
 // Update an existing tenant

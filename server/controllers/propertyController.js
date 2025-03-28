@@ -22,8 +22,8 @@ exports.getAllProperties = async (req, res) => {
 // ✅ Create a property
 exports.addProperty = async (req, res) => {
   try {
-    const { name, location, rent_price, unit_count } = req.body;
-    const propertyId = await createProperty(req.user.userId, name, location, rent_price, unit_count);
+    const { name, location, initialCost, unit_count } = req.body;
+    const propertyId = await createProperty(req.user.userId, name, location, initialCost, unit_count);
     res.status(201).json({ id: propertyId, message: "Property added successfully" });
   } catch (error) {
     res.status(500).json({ error: "Failed to add property" });
@@ -34,8 +34,8 @@ exports.addProperty = async (req, res) => {
 exports.editProperty = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, location, rent_price, unit_count } = req.body;
-    const updated = await updateProperty(id, name, location, rent_price, unit_count);
+    const { name, location, initialCost, unit_count } = req.body;
+    const updated = await updateProperty(id, name, location, initialCost, unit_count);
     if (updated) {
       res.json({ message: "Property updated successfully" });
     } else {
