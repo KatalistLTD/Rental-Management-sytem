@@ -12,7 +12,7 @@ const Property = db.define("Property", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  name: {
+  propertyName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -37,10 +37,10 @@ module.exports = {
   getProperties: async (landlordId) => {
     return await Property.findAll({ where: { landlordId } });
   },
-  createProperty: async (landlordId, name, location, initialCost, unit_count) => {
+  createProperty: async (landlordId, propertyName, location, initialCost, unit_count) => {
     const property = await Property.create({
       landlordId,
-      name,
+      propertyName,
       location,
       initialCost,
       unit_count,
@@ -50,9 +50,9 @@ module.exports = {
   getPropertyById: async (id) => {
     return await Property.findByPk(id);
   },
-  updateProperty: async (id, name, location, initialCost, unit_count) => {
+  updateProperty: async (id, propertyName, location, initialCost, unit_count) => {
     const [updated] = await Property.update(
-      { name, location, initialCost, unit_count },
+      { propertyName, location, initialCost, unit_count },
       { where: { id } }
     );
     return updated;

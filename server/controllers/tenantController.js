@@ -28,19 +28,19 @@ exports.getTenantById = async (req, res) => {
 // Create a new tenant
 exports.addTenant = async (req, res) => {
   try {
-    const { propertyId, name, email, phone, rentAmount, leaseStart, leaseEnd } = req.body;
+    const { propertyName, name, email, phone, rentAmount, leaseStart, leaseEnd } = req.body;
 
     // Get user ID from the decoded token (previously landlordId)
     const userId = req.user.userId; // Ensure `verifyToken` middleware properly attaches `userId`
 
-    if (!userId || !propertyId) {
+    if (!userId || !propertyName) {
       return res.status(400).json({ error: "Missing required fields: userId or propertyId" });
     }
 
     // Create a new tenant linked to the users table
     const tenant = await Tenant.create({
       userId,  // Now correctly linked to `users.userId`
-      propertyId,
+      propertyName,
       name,
       email,
       phone,

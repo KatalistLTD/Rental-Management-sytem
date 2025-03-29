@@ -56,7 +56,7 @@ const PropertyList = ({ token, refreshTrigger }) => {
           <tbody>
             {properties.map((property) => (
               <tr key={property.id} className="hover:bg-gray-50">
-                <td className="p-3 border-b">{property.name}</td>
+                <td className="p-3 border-b">{property.propertyName}</td>
                 <td className="p-3 border-b">{property.location}</td>
                 <td className="p-3 border-b">{property.initialCost}</td>
                 <td className="p-3 border-b">{property.unit_count}</td>

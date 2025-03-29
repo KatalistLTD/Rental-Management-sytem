@@ -47,7 +47,7 @@ export const TenantSidebar = forwardRef(({ collapsed }, ref) => {
               >
                 <link.icon size={18} className="flex-shrink-0" />
                 {!collapsed && (
-                  <p className="whitespace-nowrap">{link.label}</p>
+                  <p className="whitespace-wrap">{link.label}</p>
                 )}
               </NavLink>
             ))}

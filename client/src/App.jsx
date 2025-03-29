@@ -40,7 +40,7 @@ const router = createBrowserRouter(
             { path: "property-management", element: <LandlordProperties /> },
             { path: "tenant-management", element: <LandlordTenants /> },
             // { path: "profile", element: <Profile /> },
-            { path: "payments", element: <Payments /> },
+            
             { path: "maintenance", element: <LandlordMaintenance /> },
             { path: "invoice", element: <Invoices /> },
             { path: "reports", element: <Reports /> },
@@ -63,6 +63,7 @@ const router = createBrowserRouter(
             { index: true, element: <TenantPage /> },
             { path: "property-management", element: <LandlordProperties /> },
             // { path: "profile", element: <Profile /> },
+            { path: "payments", element: <Payments /> },
             { path: "tenant-management", element: <LandlordTenants /> },
             { path: "reports", element: <Reports /> },
             { path: "settings", element: <h1 className="title">Settings</h1> },

@@ -5,7 +5,7 @@ const API_URL = "http://localhost:5000/api/properties"; // Backend API endpoint
 
 const PropertyForm = ({ token: propToken, onPropertyAdded }) => {
   const [formData, setFormData] = useState({
-    name: "",
+    propertyName: "",
     location: "",
     initialCost: "",
     unit_count: "",
@@ -54,7 +54,7 @@ const PropertyForm = ({ token: propToken, onPropertyAdded }) => {
       
 
       setMessage({ type: "success", text: "Property added successfully!" });
-      setFormData({ name: "", location: "", rent_price: "", unit_count: "" });
+      setFormData({ propertyName: "", location: "", initialCost: "", unit_count: "" });
 
       if (onPropertyAdded) onPropertyAdded(); // Refresh property list
     } catch (error) {
@@ -74,7 +74,7 @@ const PropertyForm = ({ token: propToken, onPropertyAdded }) => {
       )}
 
       <form onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Property Name" value={formData.name} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
+        <input type="text" name="name" placeholder="Property Name" value={formData.propertyName} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
 
         <input type="text" name="location" placeholder="Location" value={formData.location} onChange={handleChange} required className="w-full p-2 mb-3 border rounded" />
 

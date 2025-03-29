@@ -11,7 +11,7 @@ const Tenant = db.define("Tenant", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  propertyId: {
+  propertyName: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },

@@ -101,7 +101,7 @@ export const tenantnavbarLinks = [
       {
         label: "Dashboard",
         icon: Home,
-        path: "/landlord",
+        path: "/tenant",
       },
     ],
   },
@@ -126,12 +126,12 @@ export const tenantnavbarLinks = [
       {
         label: "Payment",
         icon: Wallet,
-        path: "/landlord/payments",
+        path: "/tenant/payments",
       },
       {
         label: "Invoice",
         icon: ReceiptText,
-        path: "/landlord/receipts",
+        path: "/tenant/invoice",
       },
       // {
       //   label: "Payment Integration",
@@ -146,7 +146,7 @@ export const tenantnavbarLinks = [
       {
         label: "Reports",
         icon: NotebookText,
-        path: "/landlord/reports",
+        path: "/tenant/reports",
       },
       // {
       //   label: "Analytics",
@@ -161,7 +161,7 @@ export const tenantnavbarLinks = [
       {
         label: "Maintenance Requests",
         icon: Drill,
-        path: "/landlord/maintenance",
+        path: "/tenant/maintenance",
       },
     ],
   },
@@ -171,7 +171,7 @@ export const tenantnavbarLinks = [
       {
         label: "Settings",
         icon: Settings,
-        path: "/landlord/settings",
+        path: "/tenant/settings",
       },
     ],
   },

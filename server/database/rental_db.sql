@@ -9,7 +9,7 @@ CREATE TABLE landlords (
 CREATE TABLE properties (
     propertyId INT AUTO_INCREMENT PRIMARY KEY,
     landlord_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    propertyName VARCHAR(255) NOT NULL,
     location VARCHAR(255) NOT NULL,
     initialCost DECIMAL(10,2) NOT NULL,
     unit_count INT NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE tenants (
     id INT AUTO_INCREMENT PRIMARY KEY,
     landlord_id INT NOT NULL,
     property_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    propertyName VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
     phone VARCHAR(20) UNIQUE NOT NULL,
     rent_amount DECIMAL(10,2) UNSIGNED NOT NULL CHECK (rent_amount > 0),

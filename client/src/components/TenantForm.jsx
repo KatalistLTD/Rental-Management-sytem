@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 
 const TenantForm = ({ token, onTenantAdded }) => {
   const initialState = {
-    propertyId: "",
+    propertyName: "",
     name: "",
     email: "",
     phone: "",
@@ -26,6 +26,8 @@ const TenantForm = ({ token, onTenantAdded }) => {
       const { data } = await axios.get("http://localhost:5000/api/properties", {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      console.log("Fetched properties:", data);
       setProperties(data);
     } catch (err) {
       setError("Failed to load properties. Try again.");
@@ -42,9 +44,10 @@ const TenantForm = ({ token, onTenantAdded }) => {
   
     setForm({
       ...form,
-      [name]: name === "propertyId" ? parseInt(value, 10) || "" : value,
+      [name]: value, // Store property name instead of ID
     });
   };
+  
   
 
   const handleSubmit = async (e) => {
@@ -92,23 +95,24 @@ const TenantForm = ({ token, onTenantAdded }) => {
       <div className="space-y-3">
         {/* Property Dropdown */}
         <select
-          name="propertyId"
-          className="border p-2 w-full rounded-md"
-          value={form.propertyId}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Property</option>
-          {properties.length > 0 ? (
-            properties.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))
-          ) : (
-            <option disabled>Loading properties...</option>
-          )}
-        </select>
+  name="propertyName"
+  className="border p-2 w-full rounded-md"
+  value={form.propertyName}
+  onChange={handleChange}
+  required
+>
+  <option value="">Select Property</option>
+  {properties.length > 0 ? (
+    properties.map(({ propertyName }) => (
+      <option key={propertyName} value={propertyName}>
+        {propertyName}
+      </option>
+    ))
+  ) : (
+    <option disabled>Loading properties...</option>
+  )}
+</select>
+
 
         <input
           type="text"
@@ -165,14 +169,10 @@ const TenantForm = ({ token, onTenantAdded }) => {
 
       <button
   type="submit"
-  className={`w-full mt-4 p-2 rounded-md text-white ${
-    loading || !form.propertyId ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-  }`}
-  disabled={loading || !form.propertyId}
+  className="w-full mt-4 p-2 rounded-md text-white bg-blue-500 hover:bg-blue-600"
 >
   {loading ? "Adding..." : "Add Tenant"}
 </button>
-
     </form>
   );
 };
